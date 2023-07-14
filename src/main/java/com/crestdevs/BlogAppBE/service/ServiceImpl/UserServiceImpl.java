@@ -1,9 +1,10 @@
-package com.crestdevs.BlogAppBE.service;
+package com.crestdevs.BlogAppBE.service.ServiceImpl;
 
 import com.crestdevs.BlogAppBE.entity.User;
 import com.crestdevs.BlogAppBE.exception.ResourceNotFoundException;
 import com.crestdevs.BlogAppBE.payload.UserDto;
 import com.crestdevs.BlogAppBE.repository.UserRepo;
+import com.crestdevs.BlogAppBE.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

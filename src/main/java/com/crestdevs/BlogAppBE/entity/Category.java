@@ -6,9 +6,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
+@Table(name = "category")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -17,10 +19,14 @@ public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer categoryId;
+    private Integer categoryId;
 
     @Column(name = "category_title", nullable = false, length = 100)
-    String categoryTitle;
-    String categoryDescription;
+    private String categoryTitle;
+
+    private String categoryDescription;
+
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    List<Post> posts = new ArrayList<>();
 
 }
