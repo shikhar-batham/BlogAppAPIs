@@ -1,6 +1,7 @@
 package com.crestdevs.BlogAppBE.exception;
 
-public class ResourceNotFoundException extends RuntimeException {
+public class
+ResourceNotFoundException extends RuntimeException {
 
     String resourceName;
     String fieldName;

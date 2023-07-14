@@ -8,11 +8,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/vi/category")
+@RequestMapping("/api/v1/category")
 public class CategoryController {
 
     @Autowired
@@ -51,7 +50,7 @@ public class CategoryController {
         return categoryDto;
     }
 
-    @GetMapping("/")
+    @GetMapping("/getAllCategory")
     public ResponseEntity<List<CategoryDto>> getAllCategory() {
 
         List<CategoryDto> categoryDtoList = this.categoryService.getAllCategories();

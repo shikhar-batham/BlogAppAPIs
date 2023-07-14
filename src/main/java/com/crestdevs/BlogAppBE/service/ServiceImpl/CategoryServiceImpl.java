@@ -1,9 +1,10 @@
-package com.crestdevs.BlogAppBE.service;
+package com.crestdevs.BlogAppBE.service.ServiceImpl;
 
 import com.crestdevs.BlogAppBE.entity.Category;
 import com.crestdevs.BlogAppBE.exception.ResourceNotFoundException;
 import com.crestdevs.BlogAppBE.payload.CategoryDto;
 import com.crestdevs.BlogAppBE.repository.CategoryRepo;
+import com.crestdevs.BlogAppBE.service.CategoryService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
