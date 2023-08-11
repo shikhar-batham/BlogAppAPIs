@@ -1,7 +1,7 @@
 package com.crestdevs.BlogAppBE.service;
 
-import com.crestdevs.BlogAppBE.entity.Post;
 import com.crestdevs.BlogAppBE.payload.PostDto;
+import com.crestdevs.BlogAppBE.payload.PostResponse;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ public interface PostService {
     PostDto getPostById(Integer postId);
 
     //get all post
-    List<PostDto> getAllPost(Integer pageNumber,Integer pageSize);
+    PostResponse getAllPostPagination(Integer pageNumber, Integer pageSize,String sortBy);
 
     //get all post by category
     List<PostDto> getAllPostsByCategory(Integer categoryId);
