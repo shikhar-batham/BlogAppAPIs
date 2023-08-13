@@ -1,12 +1,14 @@
 package com.crestdevs.BlogAppBE.service;
 
 import com.crestdevs.BlogAppBE.payload.UserDto;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.List;
 
 
 public interface UserService {
 
+    UserDto registerNewUser(UserDto userDto);
     //create user
     UserDto createUser(UserDto userDto);
 
