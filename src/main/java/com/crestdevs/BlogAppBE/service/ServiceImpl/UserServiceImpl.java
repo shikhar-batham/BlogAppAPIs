@@ -1,14 +1,17 @@
 package com.crestdevs.BlogAppBE.service.ServiceImpl;
 
+import com.crestdevs.BlogAppBE.config.AppConstants;
+import com.crestdevs.BlogAppBE.entity.Role;
 import com.crestdevs.BlogAppBE.entity.User;
 import com.crestdevs.BlogAppBE.exception.ResourceNotFoundException;
 import com.crestdevs.BlogAppBE.payload.UserDto;
+import com.crestdevs.BlogAppBE.repository.RoleRepo;
 import com.crestdevs.BlogAppBE.repository.UserRepo;
 import com.crestdevs.BlogAppBE.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,6 +24,28 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private RoleRepo roleRepo;
+
+    @Override
+    public UserDto registerNewUser(UserDto userDto) {
+
+        User user = this.modelMapper.map(userDto, User.class);
+
+        user.setPassword(this.passwordEncoder.encode(user.getPassword()));
+
+        Role role = this.roleRepo.findById(AppConstants.NORMAL_USER).get();
+
+        user.getRoles().add(role);
+
+        User savedUser = this.userRepo.save(user);
+
+        return this.modelMapper.map(savedUser, UserDto.class);
+    }
 
     @Override
     public UserDto createUser(UserDto userDto) {
@@ -39,7 +64,7 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new ResourceNotFoundException("user", "userid", userId));
 
         fetchedUser.setName(userDto.getName());
-        fetchedUser.setAbout(userDto.getAbout());
+        fetchedUser.setLastName(userDto.getLastName());
         fetchedUser.setPassword(userDto.getPassword());
         fetchedUser.setEmail(userDto.getEmail());
 
