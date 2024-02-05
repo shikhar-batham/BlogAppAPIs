@@ -64,7 +64,7 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new ResourceNotFoundException("user", "userid", userId));
 
         fetchedUser.setName(userDto.getName());
-        fetchedUser.setAbout(userDto.getAbout());
+        fetchedUser.setLastName(userDto.getLastName());
         fetchedUser.setPassword(userDto.getPassword());
         fetchedUser.setEmail(userDto.getEmail());
 

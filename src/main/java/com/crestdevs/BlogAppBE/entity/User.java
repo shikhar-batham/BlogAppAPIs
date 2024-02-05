@@ -24,11 +24,20 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "user_name")
+    @Column(name = "first_name")
     private String name;
+
+    @Column(name = "last_name")
+    private String lastName;
+
+    @Column(name = "email")
     private String email;
+
+    @Column(name = "password")
     private String password;
-    private String about;
+
+    @Column(name = "user_name", unique = true)
+    private String userUniqueName;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Post> posts = new ArrayList<>();
