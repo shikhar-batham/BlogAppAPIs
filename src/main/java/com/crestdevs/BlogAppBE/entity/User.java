@@ -39,6 +39,9 @@ public class User implements UserDetails {
     @Column(name = "user_name", unique = true)
     private String userUniqueName;
 
+    @Column(name = "profile_image")
+    private String image;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Post> posts = new ArrayList<>();
 

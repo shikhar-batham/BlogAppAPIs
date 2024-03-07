@@ -4,12 +4,17 @@ import com.crestdevs.BlogAppBE.payload.ApiResponse;
 import com.crestdevs.BlogAppBE.payload.UserDto;
 import com.crestdevs.BlogAppBE.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -18,6 +23,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Value("${project.userProfileImages}")
+    private String path;
 
     @PostMapping("/")
     ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto) {
@@ -33,6 +41,26 @@ public class UserController {
         UserDto updatedUser = this.userService.updateUser(userDto, userId);
 
         return new ResponseEntity<>(updatedUser, HttpStatus.OK);
+    }
+
+    @PostMapping("uploadUserImage/{userId}")
+    public ResponseEntity<UserDto> uploadUserProfileImage(@PathVariable("userId") Integer userId, @RequestParam MultipartFile file) throws IOException {
+
+        UserDto userDto = this.userService.uploadUserProfileImage(userId, path, file);
+
+        return new ResponseEntity<>(userDto, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/getImage/{userId}", produces = MediaType.IMAGE_JPEG_VALUE)
+    public void downloadUserProfileImage(@PathVariable int userId, HttpServletResponse response) {
+
+        response.setContentType(MediaType.IMAGE_JPEG_VALUE);
+        try {
+            this.userService.downloadUserProfileImage(userId, path, response);
+        } catch (IOException ignored) {
+
+        }
+
     }
 
     @PreAuthorize("hasRole('ADMIN')")
