@@ -28,10 +28,10 @@ public class PostController {
 
     @PostMapping("/")
     public ResponseEntity<PostDto> createPost(@RequestBody PostDto postDto,
-                                              @RequestParam Integer userId,
-                                              @RequestParam Integer categoryId) {
+                                              @RequestParam Integer userId
+                                              ) {
 
-        PostDto createdPost = this.postService.createPost(postDto, userId, categoryId);
+        PostDto createdPost = this.postService.createPost(postDto, userId);
 
         return new ResponseEntity<>(createdPost, HttpStatus.CREATED);
     }
@@ -42,14 +42,6 @@ public class PostController {
         PostDto updatedPostDto = this.postService.updatePost(postDto, postId);
 
         return new ResponseEntity<>(updatedPostDto, HttpStatus.OK);
-    }
-
-    @GetMapping("/getPostsByCategoryId/{categoryId}")
-    public ResponseEntity<List<PostDto>> getAllPostsByCategory(@PathVariable("categoryId") Integer categoryId) {
-
-        List<PostDto> postDto = this.postService.getAllPostsByCategory(categoryId);
-
-        return new ResponseEntity<>(postDto, HttpStatus.OK);
     }
 
     @GetMapping("/getPostsByUserId/{userId}")
@@ -103,7 +95,7 @@ public class PostController {
     }
 
     @GetMapping(value = "/downloadPostImage/{postId}", produces = MediaType.IMAGE_JPEG_VALUE)
-    public void downloadPostImage(@PathVariable int postId, HttpServletResponse response) throws IOException{
+    public void downloadPostImage(@PathVariable int postId, HttpServletResponse response) throws IOException {
 
         response.setContentType(MediaType.IMAGE_JPEG_VALUE);
         try {
