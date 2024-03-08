@@ -1,6 +1,7 @@
 package com.crestdevs.BlogAppBE.service.ServiceImpl;
 
 import com.crestdevs.BlogAppBE.entity.Category;
+import com.crestdevs.BlogAppBE.entity.Image;
 import com.crestdevs.BlogAppBE.entity.Post;
 import com.crestdevs.BlogAppBE.entity.User;
 import com.crestdevs.BlogAppBE.exception.ResourceNotFoundException;
@@ -9,20 +10,29 @@ import com.crestdevs.BlogAppBE.payload.PostResponse;
 import com.crestdevs.BlogAppBE.repository.CategoryRepo;
 import com.crestdevs.BlogAppBE.repository.PostRepo;
 import com.crestdevs.BlogAppBE.repository.UserRepo;
+import com.crestdevs.BlogAppBE.service.ImageService;
 import com.crestdevs.BlogAppBE.service.PostService;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StreamUtils;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class PostServiceImpl implements PostService {
 
     @Autowired
@@ -36,6 +46,9 @@ public class PostServiceImpl implements PostService {
 
     @Autowired
     private CategoryRepo categoryRepo;
+
+    @Autowired
+    private ImageService imageService;
 
     @Override
     public PostDto createPost(PostDto postDto, Integer userId, Integer categoryId) {
@@ -64,7 +77,7 @@ public class PostServiceImpl implements PostService {
 
         fetchedPost.setTitle(postDto.getTitle());
         fetchedPost.setContent(postDto.getContent());
-        fetchedPost.setImage(postDto.getImageName());
+        fetchedPost.setImage(postDto.getImage());
 
 
         Post updatedPost = this.postRepo.save(fetchedPost);
@@ -138,5 +151,32 @@ public class PostServiceImpl implements PostService {
         List<Post> postList = this.postRepo.findByTitleContaining(keyword);
 
         return postList.stream().map(post -> this.modelMapper.map(post, PostDto.class)).collect(Collectors.toList());
+    }
+
+    @Override
+    public PostDto uploadPostImage(Integer postId, String path, MultipartFile file) throws IOException {
+
+        Post fetchedPost = this.postRepo.findById(postId).orElseThrow(() -> new ResourceNotFoundException("Post", "postId", postId));
+
+        Image image = this.imageService.saveImage(file);
+
+        fetchedPost.setImage(image.getFileName());
+        this.postRepo.save(fetchedPost);
+
+        return this.modelMapper.map(fetchedPost, PostDto.class);
+    }
+
+    @GetMapping(value = "/getImage/{postId}", produces = MediaType.IMAGE_JPEG_VALUE)
+    public void downloadPostImage(int postId, String path, HttpServletResponse response) throws IOException {
+
+        log.info("image from {},{}", "database", postId + " " + path);
+
+        Post post = this.postRepo.findById(postId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", postId));
+        String image = post.getImage();
+
+        if (!image.isEmpty()) {
+            Image img = imageService.getImage(image);
+            StreamUtils.copy(img.getData(), response.getOutputStream());
+        }
     }
 }
