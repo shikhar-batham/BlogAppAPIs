@@ -1,7 +1,5 @@
 package com.crestdevs.BlogAppBE.payload;
 
-import com.crestdevs.BlogAppBE.entity.Category;
-import com.crestdevs.BlogAppBE.entity.User;
 import lombok.*;
 
 import java.util.Date;
@@ -18,6 +16,5 @@ public class PostDto {
     private String content;
     private String image;
     private Date addedDate;
-    private CategoryDto category;
     private UserDto user ;
 }

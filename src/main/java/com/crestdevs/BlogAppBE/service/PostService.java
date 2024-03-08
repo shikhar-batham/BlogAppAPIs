@@ -11,7 +11,7 @@ import java.util.List;
 public interface PostService {
 
     //create post
-    PostDto createPost(PostDto postDto, Integer userId, Integer categoryId);
+    PostDto createPost(PostDto postDto, Integer userId);
 
     //update post
     PostDto updatePost(PostDto postDto, Integer postId);
@@ -24,9 +24,6 @@ public interface PostService {
 
     //get all post
     PostResponse getAllPostPagination(Integer pageNumber, Integer pageSize, String sortBy);
-
-    //get all post by category
-    List<PostDto> getAllPostsByCategory(Integer categoryId);
 
     //get all posts by user_id
     List<PostDto> getAllPostsByUserId(Integer userId);
