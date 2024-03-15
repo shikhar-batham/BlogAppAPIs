@@ -5,6 +5,7 @@ import com.crestdevs.BlogAppBE.payload.UserDto;
 import com.crestdevs.BlogAppBE.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -43,8 +44,8 @@ public class UserController {
         return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }
 
-    @GetMapping("/getUserByEmail/{email}")
-    public ResponseEntity<UserDto> getUserByEmail(@PathVariable("email") String email) {
+    @GetMapping("/getUserByEmail/")
+    public ResponseEntity<UserDto> getUserByEmail(@RequestParam String email) {
 
         UserDto userByEmail = this.userService.getUserByEmail(email);
 
