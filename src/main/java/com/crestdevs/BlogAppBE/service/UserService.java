@@ -30,4 +30,6 @@ public interface UserService {
     void deleteUser(Integer userId);
 
     void downloadUserProfileImage(int userId, String path, HttpServletResponse response) throws IOException;
+
+    UserDto getUserByEmail(String email);
 }

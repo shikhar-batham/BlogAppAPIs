@@ -43,6 +43,14 @@ public class UserController {
         return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }
 
+    @GetMapping("/getUserByEmail/{email}")
+    public ResponseEntity<UserDto> getUserByEmail(@PathVariable("email") String email) {
+
+        UserDto userByEmail = this.userService.getUserByEmail(email);
+
+        return new ResponseEntity<>(userByEmail, HttpStatus.OK);
+    }
+
     @PostMapping("uploadUserImage/{userId}")
     public ResponseEntity<UserDto> uploadUserProfileImage(@PathVariable("userId") Integer userId, @RequestParam MultipartFile file) throws IOException {
 

@@ -145,6 +145,16 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public UserDto getUserByEmail(String email) {
+
+        User fetchedUser = this.userRepo.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User", "user_with: " + email, 0));
+
+        UserDto userDto = this.modelMapper.map(fetchedUser, UserDto.class);
+
+        return userDto;
+    }
+
     private User DtoToUser(UserDto userDto) {
 
         User user = this.modelMapper.map(userDto, User.class);
