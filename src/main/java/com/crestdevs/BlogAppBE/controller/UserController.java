@@ -5,7 +5,6 @@ import com.crestdevs.BlogAppBE.payload.UserDto;
 import com.crestdevs.BlogAppBE.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -52,12 +51,17 @@ public class UserController {
         return new ResponseEntity<>(userByEmail, HttpStatus.OK);
     }
 
-    @PostMapping("uploadUserImage/{userId}")
-    public ResponseEntity<UserDto> uploadUserProfileImage(@PathVariable("userId") Integer userId, @RequestParam MultipartFile file) throws IOException {
+    @PostMapping("/uploadUserImage/{userId}")
+    public ResponseEntity<String> uploadUserProfileImage(@PathVariable Integer userId,
+                                                         @RequestParam("image") MultipartFile image) throws IOException {
 
-        UserDto userDto = this.userService.uploadUserProfileImage(userId, path, file);
+        try {
+            this.userService.uploadUserProfileImage(userId, path, image);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
-        return new ResponseEntity<>(userDto, HttpStatus.OK);
+        return new ResponseEntity<>("Successfully uploaded image", HttpStatus.OK);
     }
 
     @GetMapping(value = "/getImage/{userId}", produces = MediaType.IMAGE_JPEG_VALUE)
