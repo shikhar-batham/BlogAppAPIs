@@ -26,9 +26,9 @@ public class PostController {
     @Value("${project.postImages}")
     private String path;
 
-    @PostMapping("/")
+    @PostMapping("/{userId}")
     public ResponseEntity<PostDto> createPost(@RequestBody PostDto postDto,
-                                              @RequestParam Integer userId
+                                              @PathVariable("userId") Integer userId
                                               ) {
 
         PostDto createdPost = this.postService.createPost(postDto, userId);
