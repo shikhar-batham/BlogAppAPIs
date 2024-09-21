@@ -28,10 +28,12 @@ public interface PostService {
     //get all posts by user_id
     List<PostDto> getAllPostsByUserId(Integer userId);
 
+    List<PostDto> getAllPosts();
+
     //search post
     List<PostDto> searchPost(String keyword);
 
     PostDto uploadPostImage(Integer postId, String path, MultipartFile file) throws IOException;
 
-    void downloadPostImage(int postId, String path, HttpServletResponse response)throws IOException;
+    void downloadPostImage(int postId, String path, HttpServletResponse response) throws IOException;
 }

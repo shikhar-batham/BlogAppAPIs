@@ -29,7 +29,7 @@ public class PostController {
     @PostMapping("/{userId}")
     public ResponseEntity<PostDto> createPost(@RequestBody PostDto postDto,
                                               @PathVariable("userId") Integer userId
-                                              ) {
+    ) {
 
         PostDto createdPost = this.postService.createPost(postDto, userId);
 
@@ -103,6 +103,14 @@ public class PostController {
         } catch (IOException ignored) {
 
         }
+    }
+
+    @GetMapping("/getAllPosts")
+    public ResponseEntity<List<PostDto>> getAllPosts() {
+
+        List<PostDto> allPosts = this.postService.getAllPosts();
+
+        return new ResponseEntity<>(allPosts, HttpStatus.OK);
     }
 
 }
